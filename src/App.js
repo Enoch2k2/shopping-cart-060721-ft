@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Login from './components/Login';
+import Items from './components/Items';
+import Cart from './components/Cart';
+
+const items = [
+  { name: 'shampoo' },
+  { name: 'soap' },
+  { name: 'biscuits' },
+  { name: 'pizza' }
+]
 
 function App() {
+  const [ loggedIn, setLoggedIn ] = useState(false);
+  const [ username, setUsername ] = useState('');
+  const [ cart, setCart ] = useState([]);
+
+  const login = ( name ) => {
+    setUsername(name);
+    setLoggedIn(true);
+  }
+
+  const addItem = item => {
+    setCart([...cart, item]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Shopping Cart</h1>
+
+      { loggedIn ? null : <Login login={ login } />}
+      { loggedIn ? <Cart username={ username } cart={ cart } /> : null }
+      <Items items={ items } loggedIn={ loggedIn } addItem={ addItem } />
     </div>
   );
 }
